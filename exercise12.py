@@ -1,11 +1,14 @@
 import numpy 
 import matplotlib.pyplot as plt 
 import random
-import math
-import regression 
+
 
 def column(matrix, i):
     return [row[i] for row in matrix]
+
+def least_squares(X, Y):
+    theta = numpy.dot(numpy.dot(numpy.linalg.inv(numpy.dot(numpy.transpose(X), X)), numpy.transpose(X)), Y) 
+    return theta
 
 def exercise12(N, test, experiments, mu, sigma_square, theta_0):
     #Generate N equidistant value points in the interval [0, N]
@@ -14,24 +17,25 @@ def exercise12(N, test, experiments, mu, sigma_square, theta_0):
     #create X using the N points in the interval [0, N] and do regression using 5th degree pol
     X = []
     for i in range(0, N):
-        X.append(regression.polynomial_5th_X(N_points[i]))
+        x = N_points[i]
+        X.append([1, x, x**2, x**3, x**4, x**5])
 
     #get true Y
-    Y_true = regression.polynomial_equation(X, theta_0, 0)
+    Y_true = numpy.dot(X, theta_0)
 
     #create X_2 using the N points in the interval [0, N] and do regression using 2th degree pol for 100 times
     X_2 = []
     for i in range(0, 100):
-        X_2.append(regression.polynomial_2nd_X(random.choice(N_points)))
+        x = random.choice(N_points)
+        X_2.append([1, x, x**2])
 
     X_2.sort()
-
     Y_2 = []
 
     for i in range(0, experiments):
-        Y_i = regression.polynomial_equation(X_2, theta_0[0:3], regression.normal_noise(mu, sigma_square, X_2.__len__()))
-        theta_i = regression.least_squares(X_2, Y_i)
-        Y_sol = regression.polynomial_equation(X_2, theta_i, 0)
+        Y_i = numpy.dot(X_2, theta_0[0:3]) + numpy.random.normal(mu, sigma_square, X_2.__len__())
+        theta_i = least_squares(X_2, Y_i)
+        Y_sol = numpy.dot(X_2, theta_i)
         Y_2.append(Y_sol)
 
     Y_avg2 = numpy.average(Y_2)
@@ -40,16 +44,16 @@ def exercise12(N, test, experiments, mu, sigma_square, theta_0):
     #create X_10 using the N points in the interval [0, N] and do regression using 10th degree pol for 100 times
     X_10 = []
     for i in range(0, experiments):
-        X_10.append(regression.polynomial_10th_X(random.choice(N_points)))
+        x = random.choice(N_points)
+        X_10.append([1, x, x**2, x**3, x**4, x**5, x**6, x**7, x**8, x**9, x**10])
     
     X_10.sort()
-
     Ys_10 = []
 
     for i in range(0, experiments):
-        Y_i = regression.polynomial_equation(X_10, theta_0 + [0,0,0,0,0], regression.normal_noise(mu, sigma_square, X_10.__len__()))
-        theta_i = regression.least_squares(X_10, Y_i)
-        Y_sol = regression.polynomial_equation(X_10, theta_i, 0)
+        Y_i = numpy.dot(X_10, theta_0 + [0,0,0,0,0]) + numpy.random.normal(mu, sigma_square, X_10.__len__())
+        theta_i = least_squares(X_10, Y_i)
+        Y_sol = numpy.dot(X_10, theta_i)
         Ys_10.append(Y_sol)
 
     Y_avg10 = numpy.average(Ys_10, axis = 0)

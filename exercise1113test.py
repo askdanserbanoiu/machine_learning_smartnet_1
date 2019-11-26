@@ -1,14 +1,18 @@
 import numpy 
 import matplotlib.pyplot as plt 
 import random
-import math
-import regression
 
-#   MSE = E[(theta - theta_0)**2]
-#   In general E[X] = x_1*p_1 + x_2*p_2 + ... + x_n*p_n which is the average for uniform distribution
-#   How to calculate MSE: for every possible value of theta for every training set, subtract it 
-#   from theta_0, square it, find the mean for all these theta's
-        
+
+def least_squares(X, Y):
+    theta = numpy.dot(numpy.dot(numpy.linalg.inv(numpy.dot(numpy.transpose(X), X)), numpy.transpose(X)), Y) 
+    return theta
+
+
+def ridge_regression(X, Y, l):
+    XX_transpose = numpy.dot(numpy.transpose(X), X)
+    theta = numpy.dot(numpy.dot(numpy.linalg.inv(XX_transpose + l*numpy.identity(XX_transpose.__len__())), numpy.transpose(X)), Y) 
+    return theta
+
 
 def exercise1113test(N, test, mu, sigma_square, theta_0):
     #Generate N equidistant value points in the interval [0, N]
@@ -17,30 +21,32 @@ def exercise1113test(N, test, mu, sigma_square, theta_0):
     #create X using the N points in the interval [0, N]
     X = []
     for i in range(0, N):
-        X.append(regression.polynomial_5th_X(N_points[i]))
+        x = N_points[i]
+        X.append([1, x, x**2, x**3, x**4, x**5])
 
-    Y_true = regression.polynomial_equation(X, theta_0, 0)
+    Y_true = numpy.dot(X, theta_0)
 
     #find Y by multiplying X with theta_0 and adding gaussian eta
-    Y_0 = regression.polynomial_equation(X, theta_0, regression.normal_noise(mu, sigma_square, X.__len__()))
+    Y_0 = numpy.dot(X, theta_0) + numpy.random.normal(mu, sigma_square, X.__len__())
 
     #find the theta using least squares, that is find the regression line using the 20 points and Y
-    theta_least = regression.least_squares(X, Y_0)
-    theta_ridge = regression.ridge_regression(X, Y_0, 0.01)
+    theta_least = least_squares(X, Y_0)
+    theta_ridge = ridge_regression(X, Y_0, 0.01)
 
 
-    Y_least = regression.polynomial_equation(X, theta_least, 0)
-    Y_ridge = regression.polynomial_equation(X, theta_ridge, 0)
+    Y_least = numpy.dot(X, theta_least)
+    Y_ridge = numpy.dot(X, theta_ridge)
 
     #create a test set and correspondent Y
     X_test = []
     for i in range(0, test):
-        X_test.append(regression.polynomial_5th_X(random.choice(N_points)))
+        x = random.choice(N_points)
+        X_test.append([1, x, x**2, x**3, x**4, x**5])
 
     #find Y_test
-    Y_0_test = regression.polynomial_equation(X_test, theta_0, regression.normal_noise(mu, sigma_square, X_test.__len__()))
-    Y_test_least = regression.polynomial_equation(X_test, theta_least, 0)
-    Y_test_ridge = regression.polynomial_equation(X_test, theta_ridge, 0)
+    Y_0_test = numpy.dot(X_test, theta_0) + numpy.random.normal(mu, sigma_square, X_test.__len__())
+    Y_test_least = numpy.dot(X_test, theta_least)
+    Y_test_ridge = numpy.dot(X_test, theta_ridge)
 
 
     #find mean square error
