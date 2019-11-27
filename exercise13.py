@@ -55,16 +55,18 @@ def exercise13(N, test, mu, sigma_square, theta_0):
 
     print(mse1, mse2, mse3, mse4, mse5, mse6)
 
-    plt.plot(N_points, Y_0, 'o', label='noisy training set points', color='grey')
-    plt.plot(N_points, Y_0, label='curve fitting the data', color='black')
+    plt.plot(N_points, Y_0, label='noisy curve fitting the data', color='grey')
+    plt.plot(N_points, Y_0, 'o', label='noisy curve points', color='grey')
 
-    plt.plot(N_points, Y_ridge_1, label='fitted data ridge with l=0.000006', color='#339900')
-    plt.plot(N_points, Y_ridge_2, label='fitted data ridge with l=0.01', color='#33CC66')
-    plt.plot(N_points, Y_ridge_3, label='fitted data ridge with l=0.2', color='#33CC66')
+    plt.plot(N_points, Y_ridge_1, label='fitted data ridge regression with l=0.000006', color='#339900')
+    plt.plot(N_points, Y_ridge_2, label='fitted data ridge regression with l=0.01', color='#33CC66')
+    plt.plot(N_points, Y_ridge_3, label='fitted data ridge regression with l=0.2', color='#33CC66')
 
+    plt.plot(N_points, Y_true, label='true curve', color='red')
     plt.plot(N_points, Y_true, 'o', label='true curve points', color='red')
-    plt.plot(N_points, Y_true, label='true curve', color='blue')
 
+    plt.legend(bbox_to_anchor=(0.6, 1.0), fontsize='small')
+    plt.savefig("exercise13", quality=99)
     plt.show()
 
 

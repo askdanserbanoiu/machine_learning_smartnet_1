@@ -36,25 +36,25 @@ def exercise11(N, test, mu, sigma_square, theta_0):
     Y_0_test = numpy.dot(X_test, theta_0) + numpy.random.normal(mu, sigma_square, X_test.__len__())
     Y_test = numpy.dot(X_test, theta)
 
-
     #find mean square error
     mse1 = sum((Y_0 - Y_least)**2)/20
     mse2 = sum((Y_test - Y_0_test)**2)/1000
 
-    print(mse1, mse2)
+    plt.plot(0,label='mse1='+str(mse1), color='white')
+    plt.plot(0,label='mse2='+str(mse2), color='white')
 
-    plt.plot(N_points, Y_0, 'o', label='noisy training set points', color='grey')
-    plt.plot(N_points, Y_0, label='curve fitting the data', color='black')
+    plt.plot(N_points, Y_0, label='noisy curve fitting the data', color='grey')
+    plt.plot(N_points, Y_0, 'o', label='noisy curve points', color='grey')
 
-    plt.plot(N_points, Y_least, label='fitted data least', color='blue')
+    plt.plot(N_points, Y_least, label='fitted data least squares', color='blue')
 
-    plt.plot(N_points, Y_true, 'o', label='true curve points', color='red')
     plt.plot(N_points, Y_true, label='true curve', color='red')
+    plt.plot(N_points, Y_true, 'o', label='true curve points', color='red')
 
+
+    plt.legend(bbox_to_anchor=(0.42, 1.0), fontsize='small')
+    plt.savefig("exercise11", quality=99)
     plt.show()
-
-
-
 
 
 
