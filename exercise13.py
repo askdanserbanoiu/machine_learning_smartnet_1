@@ -57,11 +57,13 @@ def exercise13(N, test, mu, sigma_square, theta_0):
 
     plt.plot(N_points, Y_0, 'o', label='noisy training set points', color='grey')
     plt.plot(N_points, Y_0, label='curve fitting the data', color='black')
-    plt.plot(N_points, Y_true, label='true curve', color='blue')
 
     plt.plot(N_points, Y_ridge_1, label='fitted data ridge with l=0.000006', color='#339900')
     plt.plot(N_points, Y_ridge_2, label='fitted data ridge with l=0.01', color='#33CC66')
     plt.plot(N_points, Y_ridge_3, label='fitted data ridge with l=0.2', color='#33CC66')
+
+    plt.plot(N_points, Y_true, 'o', label='true curve points', color='red')
+    plt.plot(N_points, Y_true, label='true curve', color='blue')
 
     plt.show()
 

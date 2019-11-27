@@ -57,11 +57,17 @@ def exercise1113test(N, test, mu, sigma_square, theta_0):
 
     print(mse1, mse2, mse3, mse4)
 
-    plt.plot(N_points, Y_0, 'o', label='noisy training set points', color='grey')
+    plt.plot(N_points, Y_0, 'o', label='noisy training set points', color='black')
     plt.plot(N_points, Y_0, label='curve fitting the data', color='black')
-    plt.plot(N_points, Y_true, label='true curve', color='blue')
-    plt.plot(N_points, Y_least, label='fitted data least', color='red')
+
+
+    plt.plot(N_points, Y_least, label='fitted data least', color='blue')
     plt.plot(N_points, Y_ridge, label='fitted data ridge', color='green')
+
+    plt.plot(N_points, Y_true, 'o', label='true curve points', color='red')
+    plt.plot(N_points, Y_true, label='true curve', color='red')
+
+
     plt.show()
 
 

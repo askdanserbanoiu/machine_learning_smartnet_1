@@ -2,7 +2,6 @@ import numpy
 import matplotlib.pyplot as plt 
 import random
 
-
 def column(matrix, i):
     return [row[i] for row in matrix]
 
@@ -33,13 +32,11 @@ def exercise12(N, test, experiments, mu, sigma_square, theta_0):
     Y_2 = []
 
     for i in range(0, experiments):
-        Y_i = numpy.dot(X_2, theta_0[0:3]) + numpy.random.normal(mu, sigma_square, X_2.__len__())
-        theta_i = least_squares(X_2, Y_i)
-        Y_sol = numpy.dot(X_2, theta_i)
-        Y_2.append(Y_sol)
+        Y_noisy = numpy.dot(X_2, theta_0[0:3]) + numpy.random.normal(mu, sigma_square, X_2.__len__())
+        Y_2.append(numpy.dot(X_2, least_squares(X_2, Y_noisy)))
 
-    Y_avg2 = numpy.average(Y_2)
-    Y_var2 = numpy.var(Y_2)
+    Y_avg2 = numpy.average(Y_2, axis=0)
+    Y_var2 = numpy.var(Y_2, axis=1)
 
     #create X_10 using the N points in the interval [0, N] and do regression using 10th degree pol for 100 times
     X_10 = []
@@ -48,35 +45,42 @@ def exercise12(N, test, experiments, mu, sigma_square, theta_0):
         X_10.append([1, x, x**2, x**3, x**4, x**5, x**6, x**7, x**8, x**9, x**10])
     
     X_10.sort()
-    Ys_10 = []
+    Y_10 = []
 
     for i in range(0, experiments):
-        Y_i = numpy.dot(X_10, theta_0 + [0,0,0,0,0]) + numpy.random.normal(mu, sigma_square, X_10.__len__())
-        theta_i = least_squares(X_10, Y_i)
-        Y_sol = numpy.dot(X_10, theta_i)
-        Ys_10.append(Y_sol)
+        Y_noisy = numpy.dot(X_10, theta_0 + [0,0,0,0,0]) + numpy.random.normal(mu, sigma_square, X_10.__len__())
+        Y_10.append(numpy.dot(X_10, least_squares(X_10, Y_noisy)))
 
-    Y_avg10 = numpy.average(Ys_10, axis = 0)
-    Y_var10 = numpy.var(Ys_10, axis = 0)
+    Y_avg10 = numpy.average(Y_10, axis = 0)
+    Y_var10 = numpy.var(Y_10, axis = 1)
 
+    
+    plt.plot(column(X_2, 1), Y_2[20], label='average Y 2nd degree pol', color='#000040')
+    plt.plot(column(X_2, 1), Y_2[40], label='average Y 2nd degree pol', color='#000060')
+    plt.plot(column(X_2, 1), Y_2[60], label='average Y 2nd degree pol', color='#000080')
+    plt.plot(column(X_2, 1), Y_2[80], label='average Y 2nd degree pol', color='#0000A0')
+    plt.plot(column(X_2, 1), Y_2[99], label='average Y 2nd degree pol', color='#0033FF')
 
-    plt.plot(N_points, Y_true, label='true curve', color='black')
-    plt.plot(N_points, Y_true, 'o', label='true curve points', color='grey')
-    print(Y_2)
-    #plt.plot(column(X_2, 1), Y_avg2, label='average Y 2nd degree pol', color='blue')
-    #plt.plot(column(X_2, 1), Y_avg2 + Y_var2, 'o', label='variance of Y 2nd degree pol', color='orange')
-    #plt.plot(column(X_2, 1), Y_avg2 - Y_var2, 'o', label='variance of Y 2nd degree pol', color='orange')
+    plt.plot(column(X_2, 1), Y_avg2, 'o', label='average Y 2nd degree pol points', color='#000099')
+    plt.plot(column(X_2, 1), Y_avg2, label='average Y 2nd degree pol', color='#000099')
+    plt.plot(column(X_2, 1), Y_avg2 + Y_var2/2, 'o', label='variance of Y 2nd degree pol', color='#0000E8')
+    plt.plot(column(X_2, 1), Y_avg2 - Y_var2/2, 'o', label='variance of Y 2nd degree pol', color='#0000E8')
 
-    plt.plot(column(X_10, 1), Y_avg10, label='average Y 10th degree pol', color='green')
-    plt.plot(column(X_10, 1), Y_avg10 + Y_var10, 'o', label='variance of Y 10th degree pol', color='orange')
-    plt.plot(column(X_10, 1), Y_avg10 - Y_var10, 'o', label='variance of Y 10th degree pol', color='orange')
+    plt.plot(column(X_10, 1), Y_10[20], label='average Y 10th degree pol', color='#006800')
+    plt.plot(column(X_10, 1), Y_10[40], label='average Y 10th degree pol', color='#008800')
+    plt.plot(column(X_10, 1), Y_10[60], label='average Y 10th degree pol', color='#00A000')
+    plt.plot(column(X_10, 1), Y_10[80], label='average Y 10th degree pol', color='#00D800')
+    plt.plot(column(X_10, 1), Y_10[99], label='average Y 10th degree pol', color='#00FF00')
 
+    plt.plot(column(X_10, 1), Y_avg10, 'o', label='average Y 10th degree pol points', color='#005800')
+    plt.plot(column(X_10, 1), Y_avg10, label='average Y 10th degree pol', color='#005800')
+    plt.plot(column(X_10, 1), Y_avg10 + Y_var10/2, 'o', label='variance of Y 10th degree pol', color='#00F800')
+    plt.plot(column(X_10, 1), Y_avg10 - Y_var10/2, 'o', label='variance of Y 10th degree pol', color='#00F800')
+
+    plt.plot(N_points, Y_true, label='true curve', color='red')
+    plt.plot(N_points, Y_true, 'o', label='true curve points', color='red')
 
     plt.show()
-
-
-
-
 
 
 exercise12(20, 1000, 100, 0, 0.1, [0.2, -1, 0.9, 0.7, 0, -0.2])
