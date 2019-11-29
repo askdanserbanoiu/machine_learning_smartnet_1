@@ -2,8 +2,6 @@ import numpy
 import matplotlib.pyplot as plt 
 import random
 
-#check page 591 for report
-
 def column(matrix, i):
     return [row[i] for row in matrix]
 
