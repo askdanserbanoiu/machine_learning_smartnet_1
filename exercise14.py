@@ -69,7 +69,8 @@ def exercise14(N, sigma2_0, sigma2_n_list, theta_0):
         
         plt.legend(bbox_to_anchor=(0.42, 1.0), fontsize='small')
     
-    
+        plt.savefig("exercise14_"+str(i), quality=99)
+
         plt.show()
     
 
