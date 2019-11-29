@@ -2,6 +2,8 @@ import numpy
 import matplotlib.pyplot as plt 
 import random
 
+#check page 591 for report
+
 def column(matrix, i):
     return [row[i] for row in matrix]
 
@@ -56,11 +58,12 @@ def exercise14(N, sigma2_0, sigma2_n_list, theta_0):
         Y = numpy.dot(X, theta_0) + numpy.random.normal(0, sigma2_n, X.__len__())
          
         mean_theta = bayesian_inference_mean_theta_y(X, Y, sigma2_0, sigma2_n, theta_0)
+        
         mean_y = bayesian_inference_mean_y(X, mean_theta)
         variance_y = bayesian_inference_variance_y(X, sigma2_0, sigma2_n)
             
         plt.plot(N_points, Y_true, label='true curve', color='red')
-        
+                
         plt.plot(column(X, 1), mean_y, label='mean curve fitting the data', color='grey')
         plt.errorbar(column(X, 1), mean_y, yerr=variance_y, fmt='.k')
         
