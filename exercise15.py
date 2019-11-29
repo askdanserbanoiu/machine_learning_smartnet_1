@@ -34,12 +34,53 @@ def bayesian_inference_variance_y(X, sigma2_0, sigma2_n):
     return variance
 
 
-def exercise15(N, sigma2_0, sigma2_n_list, theta_0):
-    return ""
+def exercise15(Ns, sigma2_0_list, sigma2_n, theta_0, theta_true):
+    
+    for i in range(0, Ns.__len__()):
+        
+        N = Ns[i]
+        
+        N_points = numpy.arange(0, 2, 2/float(N))
+        
+        X_true = []
+        for i in range(0, N):
+            x = N_points[i]
+            X_true.append([1, x, x**2, x**3, x**4, x**5])
+            
+        Y_true = numpy.dot(X_true, theta_true)
+        
+        X = []
+        for i in range(0, N):
+            x = random.uniform(0, 2)
+            X.append([1, x, x**2, x**3, x**4, x**5])
+            
+        X.sort()
+        
+
+        Y = numpy.dot(X, theta_true) + numpy.random.normal(0, sigma2_n, X.__len__())
+        
+        for j in range(0, sigma2_0_list.__len__()):
+            
+            sigma2_0 = sigma2_0_list[j]
+         
+            mean_theta = bayesian_inference_mean_theta_y(X, Y, sigma2_0, sigma2_n, theta_0)
+            
+            mean_y = bayesian_inference_mean_y(X, mean_theta)
+            variance_y = bayesian_inference_variance_y(X, sigma2_0, sigma2_n)
+                
+            plt.plot(N_points, Y_true, label='true curve', color='red')
+                    
+            plt.plot(column(X, 1), mean_y, label='mean curve fitting the data', color='grey')
+            plt.errorbar(column(X, 1), mean_y, yerr=variance_y, fmt='.k')
+            
+            plt.legend(bbox_to_anchor=(0.42, 1.0), fontsize='small')
+        
+        
+            plt.show(), 
     
    
     
 
-exercise15(20, 0.1, [0.05, 0.15], [-10.54, 0.465, 0.0087, -0.093, 0, -0.004])
+exercise15([20, 500], [0.1, 2], 0.05, [0, -10.54, 0.465, 0.0087, -0.093, -0.004], [0.2, -1, 0.9, 0.7, 0, -0.2])
 
 

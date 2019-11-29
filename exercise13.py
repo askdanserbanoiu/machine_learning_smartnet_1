@@ -23,7 +23,7 @@ def exercise13(N, test, mu, sigma_square, theta_0):
     Y_0 = numpy.dot(X, theta_0) + numpy.random.normal(mu, sigma_square, X.__len__())
 
     #find the theta using least squares, that is find the regression line using the 20 points and Y
-    theta_1 = ridge_regression(X, Y_0, 0.000006)
+    theta_1 = ridge_regression(X, Y_0, 1.5)
     theta_2 = ridge_regression(X, Y_0, 0.01)
     theta_3 = ridge_regression(X, Y_0, 0.2)
 
@@ -53,7 +53,12 @@ def exercise13(N, test, mu, sigma_square, theta_0):
     mse5 = sum((Y_test_2 - Y_0_test)**2)/1000
     mse6 = sum((Y_test_3 - Y_0_test)**2)/1000
 
-    print(mse1, mse2, mse3, mse4, mse5, mse6)
+    print(mse1)
+    print(mse2)
+    print(mse3)
+    print(mse4)
+    print(mse5)
+    print(mse6)
 
     plt.plot(N_points, Y_0, label='noisy curve fitting the data', color='grey')
     plt.plot(N_points, Y_0, 'o', label='noisy curve points', color='grey')
