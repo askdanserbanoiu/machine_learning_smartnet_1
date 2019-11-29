@@ -73,6 +73,7 @@ def exercise16(N, sigma2_n, theta_0):
     plt.plot(column(X_test, 1), Y, label='mean curve fitting the data', color='grey')
 
     plt.legend(bbox_to_anchor=(0.42, 1.0), fontsize='small')
+    plt.savefig("exercise16_", quality=99)
 
     plt.show()    
    
