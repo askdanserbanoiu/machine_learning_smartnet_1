@@ -2,6 +2,8 @@ import numpy
 import matplotlib.pyplot as plt 
 import random
 
+#79-81
+
 def column(matrix, i):
     return [row[i] for row in matrix]
 
