@@ -32,41 +32,44 @@ def bayesian_inference_variance_y(X, sigma2_0, sigma2_n):
     return variance
 
 
-def exercise14(N, sigma2_0, sigma2_n, theta_0):
-    
+def exercise14(N, sigma2_0, sigma2_n_list, theta_0):
     
     N_points = numpy.arange(0, 2, 2/float(N))
     
-    #create X using the N points in the interval [0, N]
-    X = []
+    X_true = []
     for i in range(0, N):
         x = N_points[i]
-        X.append([1, x, x**2, x**3, x**4, x**5])
+        X_true.append([1, x, x**2, x**3, x**4, x**5])
         
-    Y_true = numpy.dot(X, theta_0)
-
-    Y = numpy.dot(X, theta_0) + numpy.random.normal(0, sigma2_n, X.__len__())
- 
-    mean_theta = bayesian_inference_mean_theta_y(X, Y, sigma2_0, sigma2_n, theta_0)
-    mean_y = bayesian_inference_mean_y(X, mean_theta)
-    variance_y = bayesian_inference_variance_y(X, sigma2_0, sigma2_n)
+    Y_true = numpy.dot(X_true, theta_0)
     
-    print(variance_y)
-
-    plt.plot(N_points, mean_y, label='mean curve fitting the data', color='grey')
-    plt.plot(N_points, Y_true, label='true curve', color='red')
-    plt.errorbar(N_points, mean_y, yerr=variance_y, fmt='.k')
+    X = []
+    for i in range(0, N):
+        x = random.uniform(0, 2)
+        X.append([1, x, x**2, x**3, x**4, x**5])
+    X.sort()
     
-    plt.legend(bbox_to_anchor=(0.42, 1.0), fontsize='small')
+    for i in range(0, sigma2_n_list.__len__()):
+        
+        sigma2_n = sigma2_n_list[i]
 
-
-    plt.show()
+        Y = numpy.dot(X, theta_0) + numpy.random.normal(0, sigma2_n, X.__len__())
+         
+        mean_theta = bayesian_inference_mean_theta_y(X, Y, sigma2_0, sigma2_n, theta_0)
+        mean_y = bayesian_inference_mean_y(X, mean_theta)
+        variance_y = bayesian_inference_variance_y(X, sigma2_0, sigma2_n)
+            
+        plt.plot(N_points, Y_true, label='true curve', color='red')
+        
+        plt.plot(column(X, 1), mean_y, label='mean curve fitting the data', color='grey')
+        plt.errorbar(column(X, 1), mean_y, yerr=variance_y, fmt='.k')
+        
+        plt.legend(bbox_to_anchor=(0.42, 1.0), fontsize='small')
     
-   
+    
+        plt.show()
+    
 
-
-
-exercise14(20, 0.1, 0.05, [0.2, -1, 0.9, 0.7, 0, -0.2])
-exercise14(20, 0.1, 0.15, [0.2, -1, 0.9, 0.7, 0, -0.2])
+exercise14(20, 0.1, [0.05, 0.15], [0.2, -1, 0.9, 0.7, 0, -0.2])
 
 
