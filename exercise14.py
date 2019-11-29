@@ -1,20 +1,72 @@
 import numpy 
-import matplotlib 
+import matplotlib.pyplot as plt 
 import random
 
-def bayesian_inference(X, y, theta_0, sigma2_n, sigma2_0):
+def column(matrix, i):
+    return [row[i] for row in matrix]
+
+def covariance_sigma(X, sigma2_0, sigma2_n):
     XX_transpose = numpy.dot(numpy.transpose(X), X)
-    mu_a = numpy.linalg.inv(numpy.dot(1/sigma2_0, numpy.identity(XX_transpose.__len__())) + numpy.dot(1/sigma2_n, XX_transpose))
-    mu_b = numpy.dot(numpy.linalg.inv(X), y - numpy.dot(X, theta_0))
-    mu = theta_0 + numpy.dot(numpy.dot(1/sigma2_n, mu_a), mu_b)
+    covariance_sigma = numpy.linalg.inv((1/sigma2_0)*numpy.identity(XX_transpose.__len__()) + (1/sigma2_n)*XX_transpose)
+    return covariance_sigma
+
+def bayesian_inference_mean_theta_y(X, Y, sigma2_0, sigma2_n, theta_0):
+    XX_transpose = numpy.dot(numpy.transpose(X), X)
+    mean = theta_0 + (1/sigma2_n)*numpy.dot(numpy.dot(covariance_sigma(X, sigma2_0, sigma2_n), numpy.transpose(X)), Y - numpy.dot(X, theta_0))
+    return mean
+
+def bayesian_inference_mean_y(X, mean_theta):
+    mean = []
+    for i in range(0, X.__len__()):
+        res = numpy.dot(numpy.transpose(X[i]), mean_theta)
+        mean.append(res)       
+    return mean
+
+def bayesian_inference_variance_y(X, sigma2_0, sigma2_n):
+    variance = []
+    XX_transpose = numpy.dot(numpy.transpose(X), X)
+    for i in range(0, X.__len__()):
+        term = numpy.linalg.inv(sigma2_n*numpy.identity(XX_transpose.__len__()) + sigma2_0*XX_transpose)
+        res = sigma2_n + sigma2_n*sigma2_0*sigma2_n*numpy.dot(numpy.dot(numpy.transpose(X[i]), term), X[i])
+        variance.append(res)       
+    return variance
 
 
-def exercise14(N, test, mu, sigma_square, theta_0):
+def exercise14(N, sigma2_0, sigma2_n, theta_0):
+    
+    
+    N_points = numpy.arange(0, 2, 2/float(N))
+    
+    #create X using the N points in the interval [0, N]
+    X = []
+    for i in range(0, N):
+        x = N_points[i]
+        X.append([1, x, x**2, x**3, x**4, x**5])
+        
+    Y_true = numpy.dot(X, theta_0)
+
+    Y = numpy.dot(X, theta_0) + numpy.random.normal(0, sigma2_n, X.__len__())
+ 
+    mean_theta = bayesian_inference_mean_theta_y(X, Y, sigma2_0, sigma2_n, theta_0)
+    mean_y = bayesian_inference_mean_y(X, mean_theta)
+    variance_y = bayesian_inference_variance_y(X, sigma2_0, sigma2_n)
+    
+    print(variance_y)
+
+    plt.plot(N_points, mean_y, label='mean curve fitting the data', color='grey')
+    plt.plot(N_points, Y_true, label='true curve', color='red')
+    plt.errorbar(N_points, mean_y, yerr=variance_y, fmt='.k')
+    
+    plt.legend(bbox_to_anchor=(0.42, 1.0), fontsize='small')
+
+
+    plt.show()
     
    
 
 
 
-exercise14(20, 1000, 0, 0.1, [0.2, -1, 0.9, 0.7, 0, -0.2])
+exercise14(20, 0.1, 0.05, [0.2, -1, 0.9, 0.7, 0, -0.2])
+exercise14(20, 0.1, 0.15, [0.2, -1, 0.9, 0.7, 0, -0.2])
 
 
