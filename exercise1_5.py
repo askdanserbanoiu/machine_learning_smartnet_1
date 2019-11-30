@@ -5,6 +5,18 @@ import random
 def column(matrix, i):
     return [row[i] for row in matrix]
 
+def print_figure(figure_name):
+    
+    figure_path = os.path.join(os.path.join(os.getcwd(), "figures"))
+    
+    if os.path.isdir(figure_path):
+        plt.savefig(os.path.join(figure_path, figure_name), quality=99)
+    else:
+        os.mkdir(figure_path)
+        plt.savefig(os.path.join(figure_path, figure_name), quality=99)
+    
+    return
+
 def covariance_sigma(X, sigma2_0, sigma2_n):
     XX_transpose = numpy.dot(numpy.transpose(X), X)
     covariance_sigma = numpy.linalg.inv((1/sigma2_0)*numpy.identity(XX_transpose.__len__()) + (1/sigma2_n)*XX_transpose)
@@ -32,7 +44,9 @@ def bayesian_inference_variance_y(X, sigma2_0, sigma2_n):
     return variance
 
 
-def exercise15(Ns, sigma2_0_list, sigma2_n, theta_0, theta_true):
+def exercise1_5(Ns, sigma2_0_list, sigma2_n, theta_0, theta_true):
+    
+    iterations = 0
     
     for i in range(0, Ns.__len__()):
         
@@ -41,14 +55,14 @@ def exercise15(Ns, sigma2_0_list, sigma2_n, theta_0, theta_true):
         N_points = numpy.arange(0, 2, 2/float(N))
         
         X_true = []
-        for i in range(0, N):
-            x = N_points[i]
+        for z in range(0, N):
+            x = N_points[z]
             X_true.append([1, x, x**2, x**3, x**4, x**5])
             
         Y_true = numpy.dot(X_true, theta_true)
         
         X = []
-        for i in range(0, N):
+        for z in range(0, N):
             x = random.uniform(0, 2)
             X.append([1, x, x**2, x**3, x**4, x**5])
             
@@ -73,13 +87,14 @@ def exercise15(Ns, sigma2_0_list, sigma2_n, theta_0, theta_true):
             
             plt.legend(bbox_to_anchor=(0.42, 1.0), fontsize='small')
         
-            plt.savefig("exercise15_"+str(i)+"_"+str(j), quality=99)
+            print_figure("exercise1_5_" + chr(ord('`') + (iterations + 1)))
+            
+            iterations = iterations + 1
 
-            plt.show(), 
-    
-   
+            plt.show()
     
 
-exercise15([20, 500], [0.1, 2], 0.05, [0, -10.54, 0.465, 0.0087, -0.093, -0.004], [0.2, -1, 0.9, 0.7, 0, -0.2])
+
+exercise1_5([20, 500], [0.1, 2], 0.05, [0, -10.54, 0.465, 0.0087, -0.093, -0.004], [0.2, -1, 0.9, 0.7, 0, -0.2])
 
 

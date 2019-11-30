@@ -2,12 +2,24 @@ import numpy
 import matplotlib.pyplot as plt 
 import random
 
+def print_figure(figure_name):
+    
+    figure_path = os.path.join(os.path.join(os.getcwd(), "figures"))
+    
+    if os.path.isdir(figure_path):
+        plt.savefig(os.path.join(figure_path, figure_name), quality=99)
+    else:
+        os.mkdir(figure_path)
+        plt.savefig(os.path.join(figure_path, figure_name), quality=99)
+    
+    return
+
 def ridge_regression(X, Y, l):
     XX_transpose = numpy.dot(numpy.transpose(X), X)
     theta = numpy.dot(numpy.dot(numpy.linalg.inv(XX_transpose + l*numpy.identity(XX_transpose.__len__())), numpy.transpose(X)), Y) 
     return theta
 
-def exercise13(N, test, mu, sigma_square, theta_0):
+def exercise1_3(N, test, mu, sigma_square, theta_0):
     #Generate N equidistant value points in the interval [0, N]
     N_points = numpy.arange(0, 2, 2/float(N))
     
@@ -71,12 +83,12 @@ def exercise13(N, test, mu, sigma_square, theta_0):
     plt.plot(N_points, Y_true, 'o', label='true curve points', color='red')
 
     plt.legend(bbox_to_anchor=(0.6, 1.0), fontsize='small')
-    plt.savefig("exercise13", quality=99)
+    print_figure("exercise1_3")
     plt.show()
 
 
 
 
-exercise13(20, 1000, 0, 0.1, [0.2, -1, 0.9, 0.7, 0, -0.2])
+exercise1_3(20, 1000, 0, 0.1, [0.2, -1, 0.9, 0.7, 0, -0.2])
 
 

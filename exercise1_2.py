@@ -7,11 +7,23 @@ import random
 def column(matrix, i):
     return [row[i] for row in matrix]
 
+def print_figure(figure_name):
+    
+    figure_path = os.path.join(os.path.join(os.getcwd(), "figures"))
+    
+    if os.path.isdir(figure_path):
+        plt.savefig(os.path.join(figure_path, figure_name), quality=99)
+    else:
+        os.mkdir(figure_path)
+        plt.savefig(os.path.join(figure_path, figure_name), quality=99)
+    
+    return
+
 def least_squares(X, Y):
     theta = numpy.dot(numpy.dot(numpy.linalg.inv(numpy.dot(numpy.transpose(X), X)), numpy.transpose(X)), Y) 
     return theta
 
-def exercise12(N, test, experiments, mu, sigma_square, theta_0):
+def exercise1_2(N, test, experiments, mu, sigma_square, theta_0):
     #Generate N equidistant value points in the interval [0, N]
     N_points = numpy.arange(0, 2, 2/float(N))
     
@@ -81,8 +93,8 @@ def exercise12(N, test, experiments, mu, sigma_square, theta_0):
 
  
     plt.legend(bbox_to_anchor=(0.5, 1.0), fontsize='small')
-    plt.savefig("exercise12", quality=99)
+    print_figure("exercise1_2")
     plt.show()
 
 
-exercise12(20, 1000, 100, 0, 0.1, [0.2, -1, 0.9, 0.7, 0, -0.2])
+exercise1_2(20, 1000, 100, 0, 0.1, [0.2, -1, 0.9, 0.7, 0, -0.2])

@@ -7,6 +7,18 @@ import random
 def column(matrix, i):
     return [row[i] for row in matrix]
 
+def print_figure(figure_name):
+    
+    figure_path = os.path.join(os.path.join(os.getcwd(), "figures"))
+    
+    if os.path.isdir(figure_path):
+        plt.savefig(os.path.join(figure_path, figure_name), quality=99)
+    else:
+        os.mkdir(figure_path)
+        plt.savefig(os.path.join(figure_path, figure_name), quality=99)
+    
+    return
+
 def covariance_sigma(X, sigma2_0, sigma2_n):
     XX_transpose = numpy.dot(numpy.transpose(X), X)
     covariance_sigma = numpy.linalg.inv((1/sigma2_0)*numpy.identity(XX_transpose.__len__()) + (1/sigma2_n)*XX_transpose)
@@ -34,7 +46,7 @@ def bayesian_inference_variance_y(X, sigma2_0, sigma2_n):
     return variance
 
 
-def exercise14(N, sigma2_0, sigma2_n_list, theta_0):
+def exercise1_4(N, sigma2_0, sigma2_n_list, theta_0):
     
     N_points = numpy.arange(0, 2, 2/float(N))
     
@@ -69,11 +81,11 @@ def exercise14(N, sigma2_0, sigma2_n_list, theta_0):
         
         plt.legend(bbox_to_anchor=(0.42, 1.0), fontsize='small')
     
-        plt.savefig("exercise14_"+str(i), quality=99)
+        print_figure("exercise1_4_" + chr(ord('`') + (i + 1)))
 
         plt.show()
     
 
-exercise14(20, 0.1, [0.05, 0.15], [0.2, -1, 0.9, 0.7, 0, -0.2])
+exercise1_4(20, 0.1, [0.05, 0.15], [0.2, -1, 0.9, 0.7, 0, -0.2])
 
 
