@@ -66,7 +66,9 @@ def exercise1_2(N, test, experiments, mu, sigma_square, theta_0):
     Y_avg10 = numpy.average(Y_10, axis = 0)
     Y_var10 = numpy.var(Y_10, axis = 0)
 
-    
+    plt.title('Exercise 1_2')
+    plt.xlabel('x')
+    plt.ylabel('y')
     plt.plot(N_points, Y_2[20], color='#000040')
     plt.plot(N_points, Y_2[40], color='#000060')
     plt.plot(N_points, Y_2[60], color='#000080')
@@ -74,7 +76,7 @@ def exercise1_2(N, test, experiments, mu, sigma_square, theta_0):
     plt.plot(N_points, Y_2[99], color='#0033FF')
 
     plt.plot(N_points, Y_avg2, label='average Y 2nd degree pol', color='#000099')
-    plt.plot(N_points, Y_avg2, 'o', label='average Y 2nd degree pol points', color='#000099')
+    plt.plot(N_points, Y_avg2, 'o', color='#000099')
     plt.errorbar(N_points, Y_avg2, yerr=Y_var2, fmt='.k')
 
 
@@ -85,11 +87,11 @@ def exercise1_2(N, test, experiments, mu, sigma_square, theta_0):
     plt.plot(N_points, Y_10[99], color='#00FF00')
 
     plt.plot(N_points, Y_avg10, label='average Y 10th degree pol', color='#005800')
-    plt.plot(N_points, Y_avg10, 'o', label='average Y 10th degree pol points', color='#005800')
+    plt.plot(N_points, Y_avg10, 'o', color='#005800')
     plt.errorbar(N_points, Y_avg10, yerr=Y_var10, fmt='.k')
 
     plt.plot(N_points, Y_true, label='true curve', color='red')
-    plt.plot(N_points, Y_true, 'o', label='true curve points', color='red')
+    plt.plot(N_points, Y_true, 'o', color='red')
 
  
     plt.legend(bbox_to_anchor=(0.5, 1.0), fontsize='small')

@@ -79,7 +79,10 @@ def exercise1_5(Ns, sigma2_0_list, sigma2_n, theta_0, theta_true):
             
             mean_y = bayesian_inference_mean_y(X, mean_theta)
             variance_y = bayesian_inference_variance_y(X, sigma2_0, sigma2_n)
-                
+            
+            plt.title('Exercise 1_5_' + chr(ord('`') + (iterations + 1)))
+            plt.xlabel('x')
+            plt.ylabel('y')
             plt.plot(N_points, Y_true, label='true curve', color='red')
                     
             plt.plot(column(X, 1), mean_y, label='mean curve fitting the data', color='grey')

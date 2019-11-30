@@ -56,16 +56,17 @@ def exercise1_1(N, test, mu, sigma_square, theta_0):
     plt.plot(0,label='mse1='+str(mse1), color='white')
     plt.plot(0,label='mse2='+str(mse2), color='white')
 
+    plt.title('Exercise 1_1')
+    plt.xlabel('x')
+    plt.ylabel('y')
     plt.plot(N_points, Y_0, label='noisy curve fitting the data', color='grey')
-    plt.plot(N_points, Y_0, 'o', label='noisy curve points', color='grey')
-
-    plt.plot(N_points, Y_least, label='fitted data least squares', color='blue')
-
+    plt.plot(N_points, Y_0, 'o', color='grey')
+    plt.plot(N_points, Y_least, label='least squares regression', color='blue')
     plt.plot(N_points, Y_true, label='true curve', color='red')
-    plt.plot(N_points, Y_true, 'o', label='true curve points', color='red')
+    plt.plot(N_points, Y_true, 'o', color='red')
 
 
-    plt.legend(bbox_to_anchor=(0.42, 1.0), fontsize='small')
+    plt.legend(bbox_to_anchor=(0.5, 1.0), fontsize='small')
     print_figure("exercise1_1")
     plt.show()
 
