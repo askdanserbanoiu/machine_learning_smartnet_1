@@ -34,9 +34,6 @@ def expectation_maximization(X, Y, theta_0_size, N, convergence):
 
 def exercise16(N, sigma2_n, convergence, theta_0):
     
-    a = 1
-    b = 1
-    
     N_points = numpy.arange(0, 2, 2/float(N))
     
     X = []
