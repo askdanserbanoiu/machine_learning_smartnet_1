@@ -2,22 +2,40 @@ import numpy
 import matplotlib.pyplot as plt 
 import random
 
-def expectation_maximization(X, Y, a, b, theta_0_size, N):
+def column(matrix, i):
+    return [row[i] for row in matrix]
+
+def expectation_maximization(X, Y, theta_0_size, N, convergence): 
+    sigma_0_y = []
+    mu_0_y = []
+    a = 1
+    b = 1    
     XX_transpose = numpy.dot(numpy.transpose(X), X)
-
-    sigma_0_y =  numpy.linalg.inv(a*numpy.identity(XX_transpose.__len__()) + b*XX_transpose)
-    mu_0_y = b*numpy.dot(numpy.dot(sigma_0_y, numpy.transpose(X)), Y)
-    a = theta_0_size/(numpy.linalg.norm(mu_0_y)**2 + numpy.trace(sigma_0_y))
-    b = N/(numpy.linalg.norm(Y - numpy.dot(X, mu_0_y))**2 + numpy.trace(numpy.dot(numpy.dot(X, sigma_0_y), numpy.transpose(X))))
     
-    return [a, b, sigma_0_y, mu_0_y]
+    temp_sigma_0_y = []
+    temp_mu_0_y = []
+    temp_a = 0.5
+    temp_b = 0.5
+
+    while(abs(a - temp_a) > convergence and abs(b - temp_b) > convergence):
+        
+        sigma_0_y = temp_sigma_0_y
+        mu_0_y = temp_mu_0_y
+        a = temp_a
+        b = temp_b
+        
+        temp_sigma_0_y = numpy.linalg.inv(a*numpy.identity(XX_transpose.__len__()) + b*XX_transpose)
+        temp_mu_0_y = b*numpy.dot(numpy.dot(temp_sigma_0_y, numpy.transpose(X)), Y)
+        temp_a = theta_0_size/(numpy.linalg.norm(temp_mu_0_y)**2 + numpy.trace(temp_sigma_0_y))
+        temp_b = N/(numpy.linalg.norm(Y - numpy.dot(X, temp_mu_0_y))**2 + numpy.trace(numpy.dot(numpy.dot(X, temp_sigma_0_y), numpy.transpose(X))))
+    
+    return [sigma_0_y, mu_0_y, a, b]
 
 
-def exercise16(N, sigma2_n, theta_0):
+def exercise16(N, sigma2_n, convergence, theta_0):
+    
     a = 1
     b = 1
-    mu_0 = 1
-    sigma_0 = 1
     
     N_points = numpy.arange(0, 2, 2/float(N))
     
@@ -29,31 +47,13 @@ def exercise16(N, sigma2_n, theta_0):
     Y_true = numpy.dot(X, theta_0)
     
     Y_biased = numpy.dot(X, theta_0) + numpy.random.normal(0, sigma2_n, X.__len__())
-
-    convergence = 0.000006
     
-    temp_a = 0.5
-    temp_b = 0.5
-    temp_mu_0 = []
-    temp_sigma_0 = []
-
-    while(abs(a-temp_a) > convergence and abs(b-temp_b) > convergence):
-        result = expectation_maximization(X, Y_biased, a, b, theta_0.__len__(), N)
-        a = temp_a
-        b = temp_b
-        sigma_0 = temp_sigma_0
-        mu_0 = temp_mu_0
-
-        temp_a = result[0]
-        temp_b = result[1]
-        temp_sigma_0 = result[2]
-        temp_mu_0 = result[3]
-
-        
-    a = temp_a
-    b = temp_b
-    sigma_0 = temp_sigma_0
-    mu_0 = temp_mu_0
+    result = expectation_maximization(X, Y_biased, theta_0.__len__(), N, convergence)
+      
+    sigma_0 = result[0]
+    mu_0 = result[1]
+    a = result[2]
+    b = result[3]
 
     X_test = []
     
@@ -80,6 +80,6 @@ def exercise16(N, sigma2_n, theta_0):
    
     
 
-exercise16(500, 0.05, [0.2, -1, 0.9, 0.7, 0, -0.2])
+exercise16(500, 0.05, 0.000006, [0.2, -1, 0.9, 0.7, 0, -0.2])
 
 
