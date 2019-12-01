@@ -1,6 +1,7 @@
 import numpy 
 import matplotlib.pyplot as plt 
 import random
+import os
 
 def column(matrix, i):
     return [row[i] for row in matrix]
@@ -55,9 +56,9 @@ def exercise1_6(N, sigma2_n, convergence, theta_0):
 
     Y_true = numpy.dot(X, theta_0)
     
-    Y_biased = numpy.dot(X, theta_0) + numpy.random.normal(0, sigma2_n, X.__len__())
+    Y_training = numpy.dot(X, theta_0) + numpy.random.normal(0, sigma2_n, X.__len__())
     
-    result = expectation_maximization(X, Y_biased, theta_0.__len__(), N, convergence)
+    result = expectation_maximization(X, Y_training, theta_0.__len__(), N, convergence)
       
     sigma_0 = result[0]
     mu_0 = result[1]

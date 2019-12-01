@@ -1,6 +1,7 @@
 import numpy 
 import matplotlib.pyplot as plt 
 import random
+import os
 
 def column(matrix, i):
     return [row[i] for row in matrix]
