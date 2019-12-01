@@ -6,7 +6,7 @@ import re
 
 def read_data():
     
-    data_path = os.path.join(os.path.join(os.getcwd(), "dataex2"))
+    data_path = os.path.join(os.path.join(os.getcwd(), "exercise2"))
     
     f1 = open(os.path.join(data_path, "iris.data"), "r")
     f2 = open(os.path.join(data_path, "pima-indians-diabetes.data"), "r")
