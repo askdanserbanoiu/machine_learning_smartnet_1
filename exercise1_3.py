@@ -57,19 +57,20 @@ def exercise1_3(N, N_test, l_list, mu, sigma_square, theta_0):
         plt.title('Exercise 1_3_' + chr(ord('`') + (i + 1)))
         plt.xlabel('x')
         plt.ylabel('y')
+        plt.plot(0, label='mse_y='+str(mse2), color='white')
         plt.plot(N_points, Y_training, label='training set', color='grey')
         plt.plot(N_points, Y_training, 'o', color='grey')
-        plt.plot(N_points, Y_ridge_regression, label='ridge regression with l=' + str(+l_list[i]), color='#339900')
+        plt.plot(N_points, Y_ridge_regression, label='prediction ridge regression with l=' + str(+l_list[i]), color='#339900')
         plt.plot(N_points, Y_true, label='true curve', color='red')
         plt.plot(N_points, Y_true, 'o', color='red')
     
-        plt.legend(bbox_to_anchor=(0.5, 1.0), fontsize='small')
+        plt.legend(bbox_to_anchor=(0.6, 1.0), fontsize='small')
         print_figure("exercise1_3_" + chr(ord('`') + (i + 1)))
         plt.show()
 
 
 
 
-exercise1_3(20, 1000, [0.000006, 0.1, 100], 0, 0.1, [0.2, -1, 0.9, 0.7, 0, -0.2])
+exercise1_3(20, 1000, [0.000006, 0.1, 0.05], 0, 0.1, [0.2, -1, 0.9, 0.7, 0, -0.2])
 
 

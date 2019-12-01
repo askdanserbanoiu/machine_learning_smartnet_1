@@ -72,18 +72,13 @@ def exercise1_2(N, test, experiments, mu, sigma_square, theta_0):
     plt.title('Exercise 1_2')
     plt.xlabel('x')
     plt.ylabel('y')
-
-    plt.plot(N_points, Y_avg2, label='average Y 2nd degree pol', color='#000099')
+    plt.plot(N_points, Y_avg2, label='mean Y 2nd degree pol', color='#000099')
     plt.errorbar(N_points, Y_avg2, yerr=Y_var2, fmt='.k', label='standard deviation from the mean')
-
-    plt.plot(N_points, Y_avg10, label='average Y 10th degree pol', color='#005800')
+    plt.plot(N_points, Y_avg10, label='mean Y 10th degree pol', color='#005800')
     plt.errorbar(N_points, Y_avg10, yerr=Y_var10, fmt='.k')
-
-    plt.plot(N_points, Y_true, label='true curve', color='red')
+    plt.plot(N_points, Y_true, 'o', label='true curve points', color='red')
     plt.plot(N_points, Y_true, 'o', color='red')
-
- 
-    plt.legend(bbox_to_anchor=(0.5, 1.0), fontsize='small')
+    plt.legend(bbox_to_anchor=(0.55, 1.0), fontsize='small')
     print_figure("exercise1_2")
     plt.show()
 

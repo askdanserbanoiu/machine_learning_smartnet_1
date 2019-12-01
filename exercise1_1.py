@@ -54,21 +54,23 @@ def exercise1_1(N, test, mu, sigma_square, theta_0):
     #find mean square error
     mse1 = sum((Y_training - Y_least_squares)**2)/N
     mse2 = sum((Y_training_test - Y_test)**2)/test
+    
+    print(mse1)
+    print(mse2)
 
-    plt.plot(0,label='mse1='+str(mse1), color='white')
-    plt.plot(0,label='mse2='+str(mse2), color='white')
 
     plt.title('Exercise 1_1')
     plt.xlabel('x')
     plt.ylabel('y')
+    plt.plot(0, label='mse_y='+str(mse2), color='white')
     plt.plot(N_points, Y_training, label='training set', color='grey')
     plt.plot(N_points, Y_training, 'o', color='grey')
-    plt.plot(N_points, Y_least_squares, label='least squares regression', color='blue')
+    plt.plot(N_points, Y_least_squares, label='prediction least squares', color='blue')
     plt.plot(N_points, Y_true, label='true curve', color='red')
     plt.plot(N_points, Y_true, 'o', color='red')
 
 
-    plt.legend(bbox_to_anchor=(0.5, 1.0), fontsize='small')
+    plt.legend(bbox_to_anchor=(0.53, 1.0), fontsize='small')
     print_figure("exercise1_1")
     plt.show()
 

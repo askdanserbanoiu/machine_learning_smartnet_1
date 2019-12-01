@@ -78,10 +78,11 @@ def exercise1_4(N, sigma2_0, sigma2_n_list, theta_0):
         plt.title('Exercise 1_4_' + chr(ord('`') + (i + 1)))
         plt.xlabel('x')
         plt.ylabel('y')
+        plt.plot(0, label='sigma2_n='+str(sigma2_n), color='white')
         plt.plot(N_points, Y_true, label='true curve', color='red')
         plt.plot(column(X, 1), mean_y, label='mean curve fitting the data', color='grey')
         plt.errorbar(column(X, 1), mean_y, yerr=variance_y, fmt='.k')
-        plt.legend(bbox_to_anchor=(0.42, 1.0), fontsize='small')
+        plt.legend(bbox_to_anchor=(0.47, 1.0), fontsize='small')
         print_figure("exercise1_4_" + chr(ord('`') + (i + 1)))
         plt.show()
     

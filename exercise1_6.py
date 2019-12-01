@@ -73,18 +73,20 @@ def exercise1_6(N, sigma2_n, convergence, theta_0):
         
     X_test.sort()
         
-    Y = numpy.dot(X_test, mu_0)
+    Y_em = numpy.dot(X_test, mu_0)
     
-    mse = sum((numpy.dot(X_test, theta_0) - Y)**2)/N
-    
+    mse = sum((numpy.dot(X_test, theta_0) - Y_em)**2)/N
     print(mse)
-    
+    std = numpy.std([numpy.dot(X_test, theta_0), Y_em], axis = 0)
+
     plt.title('Exercise 1_6')
     plt.xlabel('x')
     plt.ylabel('y')
+    plt.plot(0, label='mse_y='+str(mse), color='white')
     plt.plot(N_points, Y_true, label='true curve', color='red')
-    plt.plot(column(X_test, 1), Y, label='mean curve fitting the data', color='grey')
-    plt.legend(bbox_to_anchor=(0.42, 1.0), fontsize='small')
+    plt.plot(column(X_test, 1), Y_em, label='expectation maximization curve', color='grey')
+    plt.errorbar(column(X_test, 1), Y_em, yerr=std, fmt='.k', label='standard deviation')
+    plt.legend(bbox_to_anchor=(0.55, 1.0), fontsize='small')
     print_figure("exercise1_6")
     plt.show()    
    

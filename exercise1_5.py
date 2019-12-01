@@ -84,13 +84,12 @@ def exercise1_5(Ns, sigma2_0_list, sigma2_n, theta_0, theta_true):
             plt.title('Exercise 1_5_' + chr(ord('`') + (iterations + 1)))
             plt.xlabel('x')
             plt.ylabel('y')
-            plt.plot(N_points, Y_true, label='true curve', color='red')
-                    
+            plt.plot(0, label='sigma2_0='+str(sigma2_0), color='white')
+            plt.plot(0, label='N='+str(N), color='white')
+            plt.plot(N_points, Y_true, label='true curve', color='red')  
             plt.plot(column(X, 1), mean_y, label='mean curve fitting the data', color='grey')
-            plt.errorbar(column(X, 1), mean_y, yerr=variance_y, fmt='.k')
-            
-            plt.legend(bbox_to_anchor=(0.42, 1.0), fontsize='small')
-        
+            plt.errorbar(column(X, 1), mean_y, yerr=variance_y, fmt='.k')           
+            plt.legend(bbox_to_anchor=(0.47, 1.0), fontsize='small')        
             print_figure("exercise1_5_" + chr(ord('`') + (iterations + 1)))
             
             iterations = iterations + 1
