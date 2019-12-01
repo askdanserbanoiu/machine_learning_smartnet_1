@@ -65,7 +65,7 @@ def exercise1_1(N, test, mu, sigma_square, theta_0):
     plt.plot(0, label='mse_y='+str(mse2), color='white')
     plt.plot(N_points, Y_training, label='training set', color='grey')
     plt.plot(N_points, Y_training, 'o', color='grey')
-    plt.plot(N_points, Y_least_squares, label='prediction least squares', color='blue')
+    plt.plot(N_points, Y_least_squares, label='least squares', color='blue')
     plt.plot(N_points, Y_true, label='true curve', color='red')
     plt.plot(N_points, Y_true, 'o', color='red')
 
