@@ -37,10 +37,7 @@ def read_data():
                 
     return [f1_matrix, f2_matrix]
 
-def group_by_class(training):
-    
-    n_classes = numpy.unique(column(training, training[0].__len__() - 1))
-    
+def group_by_class(training, n_classes):    
     matrix = []
     
     for i in range(0, n_classes.__len__()):
@@ -57,6 +54,7 @@ def multiplication(v1, M, v2):
 
 def discrimination_function(x, m1, m2, cov1, cov2, p1, p2):
     x = x[0 : x.__len__() - 1]
+    
     quadratic_term = 1/2 * (multiplication(x, cov2, x) - multiplication(x, cov1, x))
     linear_term = multiplication(m1, cov1, x) - multiplication(m2, cov2, x)
     det_cov1 = np.linalg.det(cov1)
@@ -66,11 +64,12 @@ def discrimination_function(x, m1, m2, cov1, cov2, p1, p2):
 
     return g_x
 
-def naive_bayes_classifier(x, training_set):
+def naive_bayes_classifier_2classes(x, training_set):
     
     #training
-    
-    classes = group_by_class(training_set)
+    n_classes = numpy.unique(column(training_set, training_set[0].__len__() - 1))
+
+    classes = group_by_class(training_set, n_classes)
     class_0 = classes[0]
     class_1 = classes[1]
     
@@ -96,22 +95,33 @@ def naive_bayes_classifier(x, training_set):
     covariance_0 = s_0*numpy.identity(s_0.__len__())
     covariance_1 = s_1*numpy.identity(s_1.__len__())
     
-    
     # Discrimination Function 
     result = discrimination_function(x, m_0, m_1, covariance_0, covariance_1, p_0, p_1)
-    
-    print(result)
-    
-    return
+        
+    return n_classes[0] if result > 0 else n_classes[1]
         
     
 def exercise2_3():
     data = read_data()
     iris = data[0]
-    pima = data[1]
-    naive_bayes_classifier(pima[0], pima[1 : pima.__len__() - 1])
+    pima_indians_diabetes = data[1]
+        
+    right_guesses_indians = 0
+    wrong_guesses_indians = 0
+        
+    for i in range(0, pima_indians_diabetes.__len__() - 1):
+        result = naive_bayes_classifier_2classes(pima_indians_diabetes[i], [x for j, x in enumerate(pima_indians_diabetes) if j != i])
+        if (result == pima_indians_diabetes[i][pima_indians_diabetes[i].__len__() - 1]):
+            right_guesses_indians = right_guesses_indians + 1
+        else:
+            wrong_guesses_indians = wrong_guesses_indians + 1
+            
+    frequency_right_indians = (right_guesses_indians/pima_indians_diabetes.__len__())*100
+    frequency_wrong_indians = (wrong_guesses_indians/pima_indians_diabetes.__len__())*100
+    
+    print(frequency_right_indians)
+    print(frequency_wrong_indians)
 
-    return
    
     
 
