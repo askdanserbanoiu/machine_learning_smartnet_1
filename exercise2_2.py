@@ -39,6 +39,7 @@ def read_data():
 
 def bayes_classifier(k, test_set, training_set):
     
+    
     return
     
 def exercise2_2():
@@ -53,4 +54,4 @@ def exercise2_2():
    
     
 
-exercise2_2()
+exercise2_3()
