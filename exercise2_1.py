@@ -43,6 +43,7 @@ def k_nearest_neighbor_classifier(k, test_set, training_set):
     for i in range(0, training_set.__len__() - 1):
         distance = 0
         for j in range(0, training_set[i].__len__() - 2):
+            #squared euclidean distance as a metric (it could be malahanobis)
             distance = distance + (training_set[i][j] - test_set[j])**2
             
         distances.append([distance, training_set[i][training_set[i].__len__() - 1]])
