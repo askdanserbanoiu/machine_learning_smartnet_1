@@ -56,7 +56,7 @@ def exercise2_1():
     data = read_data()
     
     iris = data[0]
-    prima_indians_diabetes = data[1]
+    pima_indians_diabetes = data[1]
     
     right_guesses_iris = 0
     wrong_guesses_iris = 0
@@ -77,15 +77,15 @@ def exercise2_1():
     right_guesses_indians = 0
     wrong_guesses_indians = 0
         
-    for i in range(0, prima_indians_diabetes.__len__() - 1):
-        result = k_nearest_neighbor_classifier(3, prima_indians_diabetes[i], [x for j, x in enumerate(prima_indians_diabetes) if j != i])
-        if (result == prima_indians_diabetes[i][prima_indians_diabetes[i].__len__() - 1]):
+    for i in range(0, pima_indians_diabetes.__len__() - 1):
+        result = k_nearest_neighbor_classifier(3, pima_indians_diabetes[i], [x for j, x in enumerate(pima_indians_diabetes) if j != i])
+        if (result == pima_indians_diabetes[i][pima_indians_diabetes[i].__len__() - 1]):
             right_guesses_indians = right_guesses_indians + 1
         else:
             wrong_guesses_indians = wrong_guesses_indians + 1
             
-    frequency_right_indians = (right_guesses_indians/prima_indians_diabetes.__len__())*100
-    frequency_wrong_indians = (wrong_guesses_indians/prima_indians_diabetes.__len__())*100
+    frequency_right_indians = (right_guesses_indians/pima_indians_diabetes.__len__())*100
+    frequency_wrong_indians = (wrong_guesses_indians/pima_indians_diabetes.__len__())*100
     
     print(frequency_right_indians)
     print(frequency_wrong_indians)

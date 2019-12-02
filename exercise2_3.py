@@ -37,11 +37,11 @@ def read_data():
                 
     return [f1_matrix, f2_matrix]
 
-def bayes_classifier(k, test_set, training_set):
+def naive_bayes_classifier(k, test_set, training_set):
     
     return
     
-def exercise2_2():
+def exercise2_3():
     data = read_data()
     
     iris = data[0]
@@ -53,4 +53,4 @@ def exercise2_2():
    
     
 
-exercise2_2()
+exercise2_3()
