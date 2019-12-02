@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import random
 import os
 import re
-
+import itertools
 
 def column(matrix, i):
     return [row[i] for row in matrix]
@@ -70,36 +70,44 @@ def naive_bayes_classifier_2classes(x, training_set):
     n_classes = numpy.unique(column(training_set, training_set[0].__len__() - 1))
 
     classes = group_by_class(training_set, n_classes)
-    class_0 = classes[0]
-    class_1 = classes[1]
     
     # calculation of prior probabilities
-    p_0 = (classes[0].__len__())/training_set.__len__()
-    p_1 = (classes[1].__len__())/training_set.__len__()
+    probabilities = []
+    
+    for i in range(0, classes.__len__()):        
+        probabilities.append((classes[i].__len__())/training_set.__len__())
     
     # Gaussian distribution parameters 
     
     # calculations of means and variances  per columns per class
-    m_0 = []
-    s_0 = []
-    m_1 = []
-    s_1 = []
+    means = []
+    variances = []
 
-    for i in range(0, class_0[0].__len__() - 1):        
-        m_0.append(numpy.mean(column(class_0, i)))
-        s_0.append(numpy.var(column(class_0, i), axis = 0))
-        m_1.append(numpy.mean(column(class_1, i)))
-        s_1.append(numpy.var(column(class_1, i), axis = 0))
+    for i in range(0, classes[0].__len__() - 1): 
+        for j in range(0, classes.__len__()):
+            means.append(numpy.mean(column(classes[j], i)))
+            variances.append(numpy.var(column(classes[j], i), axis = 0))
 
-    # calculation of covariances
-    covariance_0 = s_0*numpy.identity(s_0.__len__())
-    covariance_1 = s_1*numpy.identity(s_1.__len__())
-    
-    # Discrimination Function 
-    result = discrimination_function(x, m_0, m_1, covariance_0, covariance_1, p_0, p_1)
+    covariances = []
+    for i in range(0, variances.__len__()):
+        covariances.append(variances[i]*numpy.identity(variances[i].__len__()))
+
+    results = []
+    combinations_classes = list(itertools.combinations(n_classes, 2))
+
+    for i in range(0, combinations_classes.__len__()):
+        # Discrimination Function 
+        m1 = means[combinations_classes[i][0]]
+        m2 = means[combinations_classes[i][1]]
+        cov1 = covariances[combinations_classes[i][0]]
+        cov2 = covariances[combinations_classes[i][1]]
+        p1 = probabilities[combinations_classes[i][0]]
+        p2 = probabilities[combinations_classes[i][1]]
+
+        results.append(discrimination_function(x, m1, m2, cov1, cov2, p1, p2))
         
-    return n_classes[0] if result > 0 else n_classes[1]
-        
+    #return n_classes[0] if result > 0 else n_classes[1]
+    print(results)   
     
 def exercise2_3():
     data = read_data()
