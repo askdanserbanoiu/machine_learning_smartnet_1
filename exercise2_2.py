@@ -90,7 +90,7 @@ def bayes_classifier_2classes(x, training_set):
         m_0.append(numpy.mean(column(class_0, i)))
         m_1.append(numpy.mean(column(class_1, i)))   
     
-    # calculation of covariances    
+    # calculation of covariances(multiplication by (N-1)/N because numpy.cov calculates variance dividing by N-1)  
     training_0 = slice_2d_columns(classes[0], 0, classes[0][0].__len__() - 1)
     training_1 = slice_2d_columns(classes[1], 0, classes[1][0].__len__() - 1)
 
