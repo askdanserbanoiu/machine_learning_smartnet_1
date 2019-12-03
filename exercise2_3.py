@@ -100,29 +100,35 @@ def naive_bayes_classifier_2classes(x, training_set):
         
     return n_classes[0] if result > 0 else n_classes[1]
         
+def cross_validation_leave_one_out(training_set):
     
+    right_guesses = 0
+    wrong_guesses = 0
+
+    for i in range(0, training_set.__len__() - 1):
+        result = naive_bayes_classifier_2classes(training_set[i], [x for j, x in enumerate(training_set) if j != i])
+        if (result == training_set[i][training_set[i].__len__() - 1]):
+            right_guesses = right_guesses + 1
+        else:
+            wrong_guesses = wrong_guesses + 1
+            
+    frequency_right = (right_guesses/training_set.__len__())*100
+    frequency_wrong = (wrong_guesses/training_set.__len__())*100
+    
+    return [frequency_right, frequency_wrong]
+
 def exercise2_3():
     data = read_data()
     iris = data[0]
-    pima_indians_diabetes = data[1]
+    pima = data[1]
         
-    right_guesses_indians = 0
-    wrong_guesses_indians = 0
-        
-    for i in range(0, pima_indians_diabetes.__len__() - 1):
-        result = naive_bayes_classifier_2classes(pima_indians_diabetes[i], [x for j, x in enumerate(pima_indians_diabetes) if j != i])
-        if (result == pima_indians_diabetes[i][pima_indians_diabetes[i].__len__() - 1]):
-            right_guesses_indians = right_guesses_indians + 1
-        else:
-            wrong_guesses_indians = wrong_guesses_indians + 1
-            
-    frequency_right_indians = (right_guesses_indians/pima_indians_diabetes.__len__())*100
-    frequency_wrong_indians = (wrong_guesses_indians/pima_indians_diabetes.__len__())*100
+    classification_percent_pima = cross_validation_leave_one_out(pima)
     
-    print(frequency_right_indians)
-    print(frequency_wrong_indians)
-
-   
+    frequency_right_pima =  classification_percent_pima[0]
+    frequency_wrong_pima =  classification_percent_pima[1]
+    
+    print(frequency_right_pima)
+    print(frequency_wrong_pima)
     
 
 exercise2_3()

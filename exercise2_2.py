@@ -131,7 +131,6 @@ def exercise2_2():
         
     classification_percent_pima = cross_validation_leave_one_out(pima)
     
-
     frequency_right_pima =  classification_percent_pima[0]
     frequency_wrong_pima =  classification_percent_pima[1]
     
