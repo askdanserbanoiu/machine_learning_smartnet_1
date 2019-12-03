@@ -82,18 +82,22 @@ def naive_bayes_classifier_2classes(x, training_set):
     # calculations of means and variances  per columns per class
     means = []
     variances = []
+    covariances = []
 
     for i in range(0, classes[0].__len__() - 1): 
         for j in range(0, classes.__len__()):
-            means.append(numpy.mean(column(classes[j], i)))
-            variances.append(numpy.var(column(classes[j], i), axis = 0))
-
-    covariances = []
-    for i in range(0, variances.__len__()):
-        covariances.append(variances[i]*numpy.identity(variances[i].__len__()))
+            print(classes[j])
+            mean = numpy.mean(column(classes[j], i))
+            variance = numpy.var(column(classes[j], i), axis = 0)
+            covariance = variance * numpy.identity(variances.__len__())
+            means.append(mean)
+            variances.append(variance)
+            covariances.append(covariance)
 
     results = []
     combinations_classes = list(itertools.combinations(n_classes, 2))
+    
+    print(combinations_classes)
 
     for i in range(0, combinations_classes.__len__()):
         # Discrimination Function 
@@ -107,7 +111,7 @@ def naive_bayes_classifier_2classes(x, training_set):
         results.append(discrimination_function(x, m1, m2, cov1, cov2, p1, p2))
         
     #return n_classes[0] if result > 0 else n_classes[1]
-    print(results)   
+    print(results[0])   
     
 def exercise2_3():
     data = read_data()
