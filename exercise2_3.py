@@ -57,8 +57,8 @@ def discrimination_function(x, m1, m2, cov1, cov2, p1, p2):
     
     quadratic_term = 1/2 * (multiplication(x, cov2, x) - multiplication(x, cov1, x))
     linear_term = multiplication(m1, cov1, x) - multiplication(m2, cov2, x)
-    det_cov1 = np.linalg.det(cov1)
-    det_cov2 = np.linalg.det(cov2)
+    det_cov1 = numpy.linalg.det(cov1)
+    det_cov2 = numpy.linalg.det(cov2)
     constant = -1/2 * multiplication(m1, cov1, m1) + 1/2 * multiplication(m2, cov2, m2) + numpy.log(p1/p2) + 1/2 * numpy.log(det_cov2/det_cov1)
     g_x = quadratic_term + linear_term + constant
 

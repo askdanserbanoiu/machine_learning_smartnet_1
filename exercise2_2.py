@@ -8,6 +8,9 @@ import re
 def column(matrix, i):
     return [row[i] for row in matrix]
 
+def slice_2d_columns(matrix, i_start, i_end): 
+    return [matrix[i][i_start : i_end] for i in range(0, matrix.__len__())]
+
 def most_frequent(List): 
     return max(set(List), key = List.count) 
 
@@ -57,14 +60,14 @@ def discrimination_function(x, m1, m2, cov1, cov2, p1, p2):
     
     quadratic_term = 1/2 * (multiplication(x, cov2, x) - multiplication(x, cov1, x))
     linear_term = multiplication(m1, cov1, x) - multiplication(m2, cov2, x)
-    det_cov1 = np.linalg.det(cov1)
-    det_cov2 = np.linalg.det(cov2)
+    det_cov1 = numpy.linalg.det(cov1)
+    det_cov2 = numpy.linalg.det(cov2)
     constant = -1/2 * multiplication(m1, cov1, m1) + 1/2 * multiplication(m2, cov2, m2) + numpy.log(p1/p2) + 1/2 * numpy.log(det_cov2/det_cov1)
     g_x = quadratic_term + linear_term + constant
 
     return g_x
 
-def naive_bayes_classifier_2classes(x, training_set):
+def bayes_classifier_2classes(x, training_set):
     
     #training
     n_classes = numpy.unique(column(training_set, training_set[0].__len__() - 1))
@@ -81,46 +84,59 @@ def naive_bayes_classifier_2classes(x, training_set):
     
     # calculations of means and variances  per columns per class
     m_0 = []
-    s_0 = []
     m_1 = []
-    s_1 = []
 
     for i in range(0, class_0[0].__len__() - 1):        
         m_0.append(numpy.mean(column(class_0, i)))
-        s_0.append(numpy.var(column(class_0, i), axis = 0))
-        m_1.append(numpy.mean(column(class_1, i)))
-        s_1.append(numpy.var(column(class_1, i), axis = 0))
+        m_1.append(numpy.mean(column(class_1, i)))   
+    
+    # calculation of covariances    
+    training_0 = slice_2d_columns(classes[0], 0, classes[0][0].__len__() - 1)
+    training_1 = slice_2d_columns(classes[1], 0, classes[1][0].__len__() - 1)
 
-    # calculation of covariances
-    covariance_0 = s_0*numpy.identity(s_0.__len__())
-    covariance_1 = s_1*numpy.identity(s_1.__len__())
+    training_0_t = numpy.transpose(training_0)
+    covariance_0 = numpy.cov(training_0_t)*((training_0.__len__() - 1)/training_0.__len__())
+    
+    training_1_t = numpy.transpose(training_1)
+    covariance_1 = numpy.cov(training_1_t)*((training_1.__len__() - 1)/training_1.__len__())
     
     # Discrimination Function 
     result = discrimination_function(x, m_0, m_1, covariance_0, covariance_1, p_0, p_1)
         
     return n_classes[0] if result > 0 else n_classes[1]
         
+ 
+def cross_validation_leave_one_out(training_set):
     
+    right_guesses = 0
+    wrong_guesses = 0
+
+    for i in range(0, training_set.__len__() - 1):
+        result = bayes_classifier_2classes(training_set[i], [x for j, x in enumerate(training_set) if j != i])
+        if (result == training_set[i][training_set[i].__len__() - 1]):
+            right_guesses = right_guesses + 1
+        else:
+            wrong_guesses = wrong_guesses + 1
+            
+    frequency_right = (right_guesses/training_set.__len__())*100
+    frequency_wrong = (wrong_guesses/training_set.__len__())*100
+    
+    return [frequency_right, frequency_wrong]
+
+
 def exercise2_2():
     data = read_data()
     iris = data[0]
-    pima_indians_diabetes = data[1]
+    pima = data[1]
         
-    right_guesses_indians = 0
-    wrong_guesses_indians = 0
-        
-    for i in range(0, pima_indians_diabetes.__len__() - 1):
-        result = naive_bayes_classifier_2classes(pima_indians_diabetes[i], [x for j, x in enumerate(pima_indians_diabetes) if j != i])
-        if (result == pima_indians_diabetes[i][pima_indians_diabetes[i].__len__() - 1]):
-            right_guesses_indians = right_guesses_indians + 1
-        else:
-            wrong_guesses_indians = wrong_guesses_indians + 1
-            
-    frequency_right_indians = (right_guesses_indians/pima_indians_diabetes.__len__())*100
-    frequency_wrong_indians = (wrong_guesses_indians/pima_indians_diabetes.__len__())*100
+    classification_percent_pima = cross_validation_leave_one_out(pima)
     
-    print(frequency_right_indians)
-    print(frequency_wrong_indians)
+
+    frequency_right_pima =  classification_percent_pima[0]
+    frequency_wrong_pima =  classification_percent_pima[1]
+    
+    print(frequency_right_pima)
+    print(frequency_wrong_pima)
 
    
     
