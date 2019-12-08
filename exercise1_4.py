@@ -42,7 +42,7 @@ def bayesian_inference_variance_y(X, sigma2_0, sigma2_n):
     XX_transpose = numpy.dot(numpy.transpose(X), X)
     for i in range(0, X.__len__()):
         term = numpy.linalg.inv(sigma2_n*numpy.identity(XX_transpose.__len__()) + sigma2_0*XX_transpose)
-        res = sigma2_n + sigma2_n*sigma2_0*sigma2_n*numpy.dot(numpy.dot(numpy.transpose(X[i]), term), X[i])
+        res = sigma2_n + sigma2_n*sigma2_0*numpy.dot(numpy.dot(numpy.transpose(X[i]), term), X[i])
         variance.append(res)       
     return variance
 

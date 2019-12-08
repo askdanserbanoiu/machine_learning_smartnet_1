@@ -64,6 +64,7 @@ def exercise1_6(N, sigma2_n, convergence, theta_0):
     mu_0 = result[1]
     a = result[2]
     b = result[3]
+    
 
     X_test = []
     

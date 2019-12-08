@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 import random
 import os
 from copy import copy, deepcopy
+from operator import add
+
+# embedded the data in the file 
 
 iris = [
     [5.1, 3.5, 1.4, 0.2, 'Iris-setosa'],
@@ -952,48 +955,55 @@ def multiplication(v1, M, v2):
     result = numpy.dot(numpy.dot(numpy.transpose(v1), numpy.linalg.inv(M)), v2)
     return result
 
-
-def perceptron_algorithm(x, training_set):
+def perceptron_alg_recursive(weights, tx):
+    weights_i = weights
+    ok = True
     
-    weights = [0] * (training_set[0].__len__() - 1)
-
-    print(weights)
-    
-    training_set_copy = slice_2d_columns(training_set, 0, training_set[0].__len__() - 1)
-    
-    print(training_set_copy)
-   
-    return 
- 
-def cross_validation_leave_one_out(training_set):
-    
-    right_guesses = 0
-    wrong_guesses = 0
-
-    for i in range(0, training_set.__len__() - 1):
-        result = perceptron_algorithm(training_set[i], [x for j, x in enumerate(training_set) if j != i])
-        if (result == training_set[i][training_set[i].__len__() - 1]):
-            right_guesses = right_guesses + 1
-        else:
-            wrong_guesses = wrong_guesses + 1
+    for i in range(0, tx.__len__()):
+        
+        twx_i= numpy.dot(numpy.transpose(weights_i), tx[i])
+        
+        if twx_i <= 0:
+            weights_i = list( map(add, weights_i, tx[i]) ) 
+            ok = False
             
-    frequency_right = (right_guesses/training_set.__len__())*100
-    frequency_wrong = (wrong_guesses/training_set.__len__())*100
+    if ok == True:    
+        return weights_i
+    else:
+        return perceptron_alg_recursive(weights_i, tx)
+        
+def simple_perceptron(training):
     
-    return [frequency_right, frequency_wrong]
+    weights = [0] * training[0].__len__()
+    keys = numpy.unique(column(training, training[0].__len__() - 1))
 
+    
+    tx = []
+    
+    for i in range(0, training.__len__()):
+        if training[i][training[i].__len__() - 1] == keys[0]:
+            temp = []
+            for m in range(training[i].__len__() - 1):
+                temp.append(-training[i][m])
+            temp.append(1)
+            tx.append(temp)
+
+        if training[i][training[i].__len__() - 1] == keys[1]:
+            temp = []
+            for m in range(training[i].__len__() - 1):
+                temp.append(training[i][m])
+            temp.append(-1)
+            tx.append(temp)            
+
+    result = perceptron_alg_recursive(weights, tx)
+    
+    print(result)
+ 
 
 def exercise2_4():
     
-    perceptron_algorithm(pima[0], pima[0 : pima.__len__() - 1])
-    
+    result = simple_perceptron(pima)
             
-    return             
-
-        
-    
-
-   
     
 
 exercise2_4()
