@@ -955,7 +955,7 @@ def multiplication(v1, M, v2):
     result = numpy.dot(numpy.dot(numpy.transpose(v1), numpy.linalg.inv(M)), v2)
     return result
 
-def perceptron_alg_recursive(weights, tx):
+def perceptron_alg_recursive(weights, tx, i, max_i):
     weights_i = weights
     ok = True
     
@@ -970,39 +970,46 @@ def perceptron_alg_recursive(weights, tx):
     if ok == True:    
         return weights_i
     else:
-        return perceptron_alg_recursive(weights_i, tx)
+        if i > max_i:
+            return []
+        else:
+            return perceptron_alg_recursive(weights_i, tx, i + 1, max_i)
         
 def simple_perceptron(training):
     
     weights = [0] * training[0].__len__()
     keys = numpy.unique(column(training, training[0].__len__() - 1))
-
     
-    tx = []
+    results = []
     
-    for i in range(0, training.__len__()):
-        if training[i][training[i].__len__() - 1] == keys[0]:
-            temp = []
-            for m in range(training[i].__len__() - 1):
-                temp.append(-training[i][m])
-            temp.append(1)
-            tx.append(temp)
+    for k in range(0, keys.__len__()):
+        tx = []
 
-        if training[i][training[i].__len__() - 1] == keys[1]:
-            temp = []
-            for m in range(training[i].__len__() - 1):
-                temp.append(training[i][m])
-            temp.append(-1)
-            tx.append(temp)            
-
-    result = perceptron_alg_recursive(weights, tx)
+        for i in range(0, training.__len__()):
+            if training[i][training[i].__len__() - 1] == keys[k]:
+                temp = []
+                for m in range(training[i].__len__() - 1):
+                    temp.append(-training[i][m])
+                temp.append(1)
+                tx.append(temp)
     
-    print(result)
+            if training[i][training[i].__len__() - 1] != keys[k]:
+                temp = []
+                for m in range(training[i].__len__() - 1):
+                    temp.append(training[i][m])
+                temp.append(-1)
+                tx.append(temp)            
+
+        results.append(perceptron_alg_recursive(weights, tx, 0, 100))
+        
+    
+    
+    print(results)
  
 
 def exercise2_4():
     
-    result = simple_perceptron(pima)
+    result = simple_perceptron(iris)
             
     
 
