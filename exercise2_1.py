@@ -940,9 +940,9 @@ def most_frequent(List):
 def k_nearest_neighbor_classifier(k, test_set, training_set):
     
     distances = []
-    for i in range(0, training_set.__len__() - 1):
+    for i in range(0, training_set.__len__()):
         distance = 0
-        for j in range(0, training_set[i].__len__() - 2):
+        for j in range(0, training_set[i].__len__() - 1):
             #squared euclidean distance as a metric (it could be malahanobis)
             distance = distance + (training_set[i][j] - test_set[j])**2
             
@@ -952,13 +952,13 @@ def k_nearest_neighbor_classifier(k, test_set, training_set):
     nearest = most_frequent(column(distances[0:k], 1))
     return nearest
 
-def cross_validation_leave_one_out(training_set):
+def cross_validation_leave_one_out(training_set, k):
     
     right_guesses = 0
     wrong_guesses = 0
 
-    for i in range(0, training_set.__len__() - 1):
-        result = k_nearest_neighbor_classifier(3, training_set[i], [x for j, x in enumerate(training_set) if j != i])
+    for i in range(0, training_set.__len__()):
+        result = k_nearest_neighbor_classifier(k, training_set[i], [x for j, x in enumerate(training_set) if j != i])
         if (result == training_set[i][training_set[i].__len__() - 1]):
             right_guesses = right_guesses + 1
         else:
@@ -972,22 +972,33 @@ def cross_validation_leave_one_out(training_set):
     
 def exercise2_1():
     
-    classification_percent_iris = cross_validation_leave_one_out(iris)
+    frequency_right_iris = []
+    frequency_wrong_iris = []
+    frequency_right_pima = []
+    frequency_wrong_pima = []
+    
+    k_range = range(1, 20, 2)
+    for i in k_range:
+        classification_percent_iris = cross_validation_leave_one_out(iris, i)
             
-    frequency_right_iris = classification_percent_iris[0]
-    frequency_wrong_iris = classification_percent_iris[1]
+        frequency_right_iris.append(classification_percent_iris[0])
+        frequency_wrong_iris.append(classification_percent_iris[1])
+        
+        classification_percent_pima = cross_validation_leave_one_out(pima, i)
+
+        frequency_right_pima.append(classification_percent_pima[0])
+        frequency_wrong_pima.append(classification_percent_pima[1])
+
     
+    plt.title('Exercise 2_1_KNN')
+    plt.xlabel('k value')
+    plt.ylabel('Accuracy (%)')
+    plt.axis([k_range[0], k_range[-1], 65, 100]) 
+    plt.plot(k_range, frequency_right_iris, label='Iris Plant Database', color='m', marker='', linestyle='-')
+    plt.plot(k_range, frequency_right_pima, label='Pima Indians Diabetes Database', color='g', marker='', linestyle='-')
+    plt.legend(loc="best")
     print(frequency_right_iris)
-    print(frequency_wrong_iris)
-    
-    classification_percent_pima = cross_validation_leave_one_out(pima)
-
-    frequency_right_pima =  classification_percent_pima[0]
-    frequency_wrong_pima =  classification_percent_pima[1]
-
     print(frequency_right_pima)
-    print(frequency_wrong_pima)
-    
     return
    
     

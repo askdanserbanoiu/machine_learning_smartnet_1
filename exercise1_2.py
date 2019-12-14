@@ -1,6 +1,6 @@
 import numpy 
 import matplotlib.pyplot as plt 
-import random
+import math
 import os
 
 #check page 79-81 for report
@@ -42,44 +42,49 @@ def exercise1_2(N, test, experiments, mu, sigma_square, theta_0):
     for i in range(0, 20):
         x = N_points[i]
         X_2.append([1, x, x**2])
-
-    Y_2 = []
-
-    for i in range(0, experiments):
-        Y_noisy = numpy.dot(X_2, theta_0[0:3]) + numpy.random.normal(mu, sigma_square, X_2.__len__())
-        Y_2.append(numpy.dot(X_2, least_squares(X_2, Y_noisy)))
-
-    Y_avg2 = numpy.average(Y_2, axis=0)
-    Y_var2 = numpy.std(Y_2, axis = 0)
-
+        
     #create X_10 using the N points in the interval [0, N] 
     X_10 = []
     for i in range(0, 20):
         x = N_points[i]
         X_10.append([1, x, x**2, x**3, x**4, x**5, x**6, x**7, x**8, x**9, x**10])
-    
+
+    Y_2 = []
     Y_10 = []
+    Y_N = []
 
     for i in range(0, experiments):
-        Y_noisy = numpy.dot(X_10, theta_0 + [0,0,0,0,0]) + numpy.random.normal(mu, sigma_square, X_10.__len__())
+        Y_noisy = Y_true + numpy.random.normal(mu, math.sqrt(sigma_square), Y_true.__len__())
+        Y_N.append(Y_noisy)
+        Y_2.append(numpy.dot(X_2, least_squares(X_2, Y_noisy)))
         Y_10.append(numpy.dot(X_10, least_squares(X_10, Y_noisy)))
+
+    Y_avg2 = numpy.average(Y_2, axis=0)
+    Y_var2 = numpy.std(Y_2, axis = 0)
 
     Y_avg10 = numpy.average(Y_10, axis = 0)
     Y_var10 = numpy.std(Y_10, axis = 0)
     
-    print(Y_var10)
+    #print(Y_var10)
 
-    plt.title('Exercise 1_2')
+    plt.title('Exercise 1_2_single_experiment')
     plt.xlabel('x')
     plt.ylabel('y')
     plt.plot(N_points, Y_avg2, label='mean Y 2nd degree pol', color='#000099')
-    plt.errorbar(N_points, Y_avg2, yerr=Y_var2, fmt='.k', label='standard deviation from the mean')
+    plt.errorbar(N_points, Y_avg2, yerr=Y_var2, fmt='.m',linewidth=3, label='standard deviation from the mean')
     plt.plot(N_points, Y_avg10, label='mean Y 10th degree pol', color='#005800')
     plt.errorbar(N_points, Y_avg10, yerr=Y_var10, fmt='.k')
     plt.plot(N_points, Y_true, 'o', label='true curve points', color='red')
     plt.plot(N_points, Y_true, 'o', color='red')
     plt.legend(bbox_to_anchor=(0.55, 1.0), fontsize='small')
-    print_figure("exercise1_2")
+    
+#    plt.axis([N_points[0], N_points[-1], -0.5, 2.5])
+#    plt.plot(N_points, Y_2[0], label='Y 2nd degree pol', color='#000099')
+#    plt.plot(N_points, Y_10[0], label='Y 10th degree pol', color='#005800')
+#    plt.plot(N_points, Y_N[0], 'o', label='true curve points', color='red')
+#    plt.legend(bbox_to_anchor=(0.55, 1.0), fontsize='small')
+#    print_figure("exercise1_2_single_experiment")
+    
     plt.show()
 
 

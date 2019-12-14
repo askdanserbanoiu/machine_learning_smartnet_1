@@ -1004,7 +1004,7 @@ def cross_validation_leave_one_out(training_set):
     right_guesses = 0
     wrong_guesses = 0
 
-    for i in range(0, training_set.__len__() - 1):
+    for i in range(0, training_set.__len__()):
         result = naive_bayes_classifier_2classes(training_set[i], [x for j, x in enumerate(training_set) if j != i])
         if (result == training_set[i][training_set[i].__len__() - 1]):
             right_guesses = right_guesses + 1

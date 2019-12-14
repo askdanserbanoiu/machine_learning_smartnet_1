@@ -974,7 +974,6 @@ def bayes_classifier_2classes(x, training_set):
     classes = group_by_class(training_set, n_classes)
     class_0 = classes[0]
     class_1 = classes[1]
-    
     # calculation of prior probabilities
     p_0 = (classes[0].__len__())/training_set.__len__()
     p_1 = (classes[1].__len__())/training_set.__len__()
@@ -1010,7 +1009,7 @@ def cross_validation_leave_one_out(training_set):
     right_guesses = 0
     wrong_guesses = 0
 
-    for i in range(0, training_set.__len__() - 1):
+    for i in range(0, training_set.__len__()):
         result = bayes_classifier_2classes(training_set[i], [x for j, x in enumerate(training_set) if j != i])
         if (result == training_set[i][training_set[i].__len__() - 1]):
             right_guesses = right_guesses + 1
