@@ -1,6 +1,7 @@
 import numpy 
 import matplotlib.pyplot as plt 
 import random
+import math
 import os
 
 def column(matrix, i):
@@ -52,11 +53,11 @@ def exercise1_6(N, sigma2_n, convergence, theta_0):
     X = []
     for i in range(0, N):
         x = N_points[i]
-        X.append([1, x, x**2, x**3, x**4, x**5])
+        X.append([1, x, x**2, x**3, x**5])
 
     Y_true = numpy.dot(X, theta_0)
     
-    Y_training = numpy.dot(X, theta_0) + numpy.random.normal(0, sigma2_n, X.__len__())
+    Y_training = numpy.dot(X, theta_0) + numpy.random.normal(0, math.sqrt(sigma2_n), X.__len__())
     
     result = expectation_maximization(X, Y_training, theta_0.__len__(), N, convergence)
       
@@ -70,7 +71,7 @@ def exercise1_6(N, sigma2_n, convergence, theta_0):
     
     for i in range(0, 20):
         x = random.uniform(0, 2)
-        X_test.append([1, x, x**2, x**3, x**4, x**5]) 
+        X_test.append([1, x, x**2, x**3, x**5]) 
         
     X_test.sort()
         
@@ -83,6 +84,7 @@ def exercise1_6(N, sigma2_n, convergence, theta_0):
     plt.title('Exercise 1_6')
     plt.xlabel('x')
     plt.ylabel('y')
+    plt.axis([N_points[0], N_points[-1], -0.3, 2])
     plt.plot(0, label='mse_y='+str(mse), color='white')
     plt.plot(N_points, Y_true, label='true curve', color='red')
     plt.plot(column(X_test, 1), Y_em, label='expectation maximization curve', color='grey')
@@ -94,4 +96,4 @@ def exercise1_6(N, sigma2_n, convergence, theta_0):
    
     
 
-exercise1_6(500, 0.05, 0.000006, [0.2, -1, 0.9, 0.7, 0, -0.2])
+exercise1_6(500, 0.05, 0.000006, [0.2, -1, 0.9, 0.7, -0.2])
