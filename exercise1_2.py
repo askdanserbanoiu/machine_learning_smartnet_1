@@ -66,24 +66,52 @@ def exercise1_2(N, test, experiments, mu, sigma_square, theta_0):
     Y_var10 = numpy.std(Y_10, axis = 0)
     
     #print(Y_var10)
+    
+   
+    for i in range(0, 10):
+        plt.title('10 samples from 2nd degree polynomial')
 
-    plt.title('Exercise 1_2_single_experiment')
+        plt.xlabel('x')
+        plt.ylabel('y')
+        plt.axis([N_points[0], N_points[-1], -0.5, 2.5])
+        plt.plot(N_points, Y_2[i], color='black')
+        
+    print_figure("exercise1_2_samples_2nd_degree_polynomial")
+    plt.show()
+    
+    for i in range(0, 10):
+        plt.title('10 samples from 10th degree polynomial')
+
+        plt.xlabel('x')
+        plt.ylabel('y')    
+        plt.axis([N_points[0], N_points[-1], -0.5, 2.5])
+        plt.plot(N_points, Y_10[i], color='black')
+        
+    print_figure("exercise1_2_samples_10th_degree_polynomial")
+    plt.show()
+
+    plt.title('Exercise 1_2')
     plt.xlabel('x')
     plt.ylabel('y')
+    plt.axis([N_points[0], N_points[-1], -0.5, 2.5])
     plt.plot(N_points, Y_avg2, label='mean Y 2nd degree pol', color='#000099')
     plt.errorbar(N_points, Y_avg2, yerr=Y_var2, fmt='.m',linewidth=3, label='standard deviation from the mean')
     plt.plot(N_points, Y_avg10, label='mean Y 10th degree pol', color='#005800')
     plt.errorbar(N_points, Y_avg10, yerr=Y_var10, fmt='.k')
-    plt.plot(N_points, Y_true, 'o', label='true curve points', color='red')
+    plt.plot(N_points, Y_true, 'o', label='true curve', color='red')
     plt.plot(N_points, Y_true, 'o', color='red')
     plt.legend(bbox_to_anchor=(0.55, 1.0), fontsize='small')
+    plt.show()
     
-#    plt.axis([N_points[0], N_points[-1], -0.5, 2.5])
-#    plt.plot(N_points, Y_2[0], label='Y 2nd degree pol', color='#000099')
-#    plt.plot(N_points, Y_10[0], label='Y 10th degree pol', color='#005800')
-#    plt.plot(N_points, Y_N[0], 'o', label='true curve points', color='red')
-#    plt.legend(bbox_to_anchor=(0.55, 1.0), fontsize='small')
-#    print_figure("exercise1_2_single_experiment")
+    plt.title('Exercise 1_2 single experiment')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.axis([N_points[0], N_points[-1], -0.5, 2.5])
+    plt.plot(N_points, Y_2[0], label='Y 2nd degree pol', color='#000099')
+    plt.plot(N_points, Y_10[0], label='Y 10th degree pol', color='#005800')
+    plt.plot(N_points, Y_N[0], 'o', label='training points', color='orange')
+    plt.legend(bbox_to_anchor=(0.55, 1.0), fontsize='small')
+    print_figure("exercise1_2_single_experiment")
     
     plt.show()
 
