@@ -76,9 +76,9 @@ def exercise1_3(N, N_test, l_list, mu, sigma_square, theta_0):
 #        print_figure("exercise1_3_" + chr(ord('`') + (i + 1)))
 #        plt.show()
 
-    plt.title('Exercise 1_3_mse' + chr(ord('`') + (i + 1)))
+    plt.title('Exercise 1_3_mse')
     plt.xlabel('lamda')
-    plt.ylabel('mse1')
+    plt.ylabel('MSE')
     plt.axis([l_list[0], l_list[-1], 0.04, 0.15])
     plt.plot(l_list, mse1_all_lamdas, label='mse over training set', color='m', linestyle='-')
     plt.plot(l_list, mse2_all_lamdas, label='mse over test set', color='g', linestyle='-')
