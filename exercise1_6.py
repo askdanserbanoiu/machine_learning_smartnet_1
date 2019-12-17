@@ -30,20 +30,24 @@ def expectation_maximization(X, Y, theta_0_size, N, convergence):
     temp_mu_0_y = []
     temp_a = 0.5
     temp_b = 0.5
-
+ 
+    a_values = [1]
+    b_values = [1]
     while(abs(a - temp_a) > convergence and abs(b - temp_b) > convergence):
         
         sigma_0_y = temp_sigma_0_y
         mu_0_y = temp_mu_0_y
         a = temp_a
         b = temp_b
+        a_values.append(a)
+        b_values.append(b)
         
         temp_sigma_0_y = numpy.linalg.inv(a*numpy.identity(XX_transpose.__len__()) + b*XX_transpose)
         temp_mu_0_y = b*numpy.dot(numpy.dot(temp_sigma_0_y, numpy.transpose(X)), Y)
         temp_a = theta_0_size/(numpy.linalg.norm(temp_mu_0_y)**2 + numpy.trace(temp_sigma_0_y))
         temp_b = N/(numpy.linalg.norm(Y - numpy.dot(X, temp_mu_0_y))**2 + numpy.trace(numpy.dot(numpy.dot(X, temp_sigma_0_y), numpy.transpose(X))))
     
-    return [sigma_0_y, mu_0_y, a, b]
+    return [sigma_0_y, mu_0_y, a_values, b_values]
 
 
 def exercise1_6(N, sigma2_n, convergence, theta_0):
@@ -63,8 +67,8 @@ def exercise1_6(N, sigma2_n, convergence, theta_0):
       
     sigma_0 = result[0]
     mu_0 = result[1]
-    a = result[2]
-    b = result[3]
+    a_values = result[2]
+    b_values = result[3]
     
 
     X_test = []
@@ -93,7 +97,15 @@ def exercise1_6(N, sigma2_n, convergence, theta_0):
     print_figure("exercise1_6")
     plt.show()    
    
-   
+    plt.title('Exercise 1_6_convergence')
+    plt.xlabel('Iteration')
+    plt.ylabel('sigma')
+    plt.axis([0, b_values.__len__() - 1, 0, 2])
+    plt.plot(range(0, b_values.__len__()), numpy.true_divide(1, b_values), label='noise_variance', color='g')
+    plt.hlines(sigma2_n, 0, b_values.__len__(), colors='g', linestyles='--', label='noise_variance_true')
+    plt.legend(bbox_to_anchor=(0.55, 1.0), fontsize='small')
+    print_figure("exercise1_6")
+    plt.show()    
     
 
-exercise1_6(500, 0.05, 0.000006, [0.2, -1, 0.9, 0.7, -0.2])
+exercise1_6(500, 0.05, 0.0000001, [0.2, -1, 0.9, 0.7, -0.2])
